@@ -1,6 +1,6 @@
 program exemplo1;
 	var 
-		n, s, i: integer;
+		n, s, i != integer;
 	procedure soma;
 		var q: integer;
 	begin
@@ -19,6 +19,4 @@ begin
 		write (s);
 		i:=i+1;
 	end
-end.
-			
-			
+end.		
