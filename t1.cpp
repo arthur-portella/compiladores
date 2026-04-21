@@ -37,8 +37,10 @@ void PROXIMO() {
     }
 }
 
-void ERRO(string msg) {
-    cout << "Erro na linha " << linha << ": " << msg << '\n';
+void ERRO(string msg, string lexema = "") {
+    cout << "\nErro na linha " << linha << ": " << msg;
+    if (lexema != "")
+        cout << " -> [ " << lexema << " ]";
     exit(1);
 }
 
@@ -100,7 +102,7 @@ void ANALISADOR_LEXICO() {
         if (simbolo != "ERRO")
             cout << "<" << s << ", " << simbolo << "> ";
         else
-            ERRO("Simbolo especial nao reconhecido: " + s);
+            ERRO("Simbolo especial nao reconhecido", s);
     } 
     
     else if (isalpha(proximo)) {
@@ -119,15 +121,22 @@ void ANALISADOR_LEXICO() {
             PROXIMO();
         } while (isdigit(proximo));
 
-        if (isalpha(proximo))
-            ERRO("Identificador ou numero nao reconhecidos");
-
+        if (isalpha(proximo)) {
+            while (isalnum(proximo)) {
+                atomo += proximo;
+                PROXIMO();
+            }
+            ERRO("Identificador ou numero nao reconhecido", atomo);
+        }
+            
         simbolo = CODIGO(atomo);
         cout << "<" << atomo << ", " << simbolo << "> ";
     }
 
     else {
-        ERRO("Caractere invalido.");
+        string caracter;
+        caracter += proximo;
+        ERRO("Caractere invalido", caracter);
     }    
 }
 
